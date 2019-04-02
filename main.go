@@ -23,8 +23,8 @@ func startServer() {
 	mr.PathPrefix("/client/").Handler(http.StripPrefix("/client/", http.FileServer(http.Dir("./resources"))))
 	//CRUD API routes
 	aRouter := apiRouter.PathPrefix("/something").Subrouter()
-	/*Play A Song   */ aRouter.HandleFunc("/{id}", reqHandler).Methods("POST")
-	/*List all songs*/ aRouter.HandleFunc("/list", reqHandler).Methods("GET")
+	/*A route		*/ aRouter.HandleFunc("/{id}", reqHandler).Methods("POST")
+	/*Another Route	*/ aRouter.HandleFunc("/list", reqHandler).Methods("GET")
 	log.Println("Listening for requests")
 	http.ListenAndServe(fmt.Sprintf(":%v", port), mr)
 }
