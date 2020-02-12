@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"mime"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -19,8 +20,10 @@ func startServer() {
 	mr := mux.NewRouter()
 	mr.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 	apiRouter := mr.PathPrefix("/api").Subrouter()
+	go mime.AddExtensionType(".css", "text/css; charset=utf-8")
+	go mime.AddExtensionType(".js", "application/javascript; charset=utf-8")
 	//Setup a static router for HTML/CSS/JS
-	mr.PathPrefix("/client/").Handler(http.StripPrefix("/client/", http.FileServer(http.Dir("./resources"))))
+	mr.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./resources"))))
 	//CRUD API routes
 	aRouter := apiRouter.PathPrefix("/something").Subrouter()
 	/*A route		*/ aRouter.HandleFunc("/{id}", reqHandler).Methods("POST")
